@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login Module in JQuery</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .cust-modal {
+            display: none;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgb(0, 0, 0, 0.3);
+            position: absolute;
+            left: 0px;
+            top: 0px;
+        }
+
+        .form {
+            border: 3px double silver;
+            padding: 10px 10px;
+            margin-top: 40px;
+            background-color: beige;
+            border-radius: 1%;
+            box-shadow: 0px 0px 50px black
+        }
+
+        .cust-close {
+            border-radius: 50%;
+            padding: 4px;
+            background-color: red;
+            color: white;
+        }
+
+        .cust-close:hover {
+            cursor: pointer;
+        }
+
+        .curser:hover {
+            cursor: pointer;
+        }
+    </style>
+    <script src="./jquery-3.3.1.js"></script>
+    <noscript>
+        Please Enable JAVASCRIPT
+    </noscript>
+    <script src="https://maps.googleapis.com/maps/api/js"></script>
+    <script src="./geolocation-marker-master/src/geolocation-marker.js"></script>
+    <script>
+
+        var map, GeoMarker, l, l1;
+        function getlocation() {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                l = position.coords.latitude;
+                l1 = position.coords.longitude;
+                initialize(l,l1);
+            });
+        }
+        function initialize(l,l1) {
+            //alert(l + "  " + l1);
+            var mapOptions = {
+                zoom: 17,
+                center: new google.maps.LatLng(l, l1),
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            map = new google.maps.Map(document.getElementById('map_canvas'),
+                mapOptions);
+
+            GeoMarker = new GeolocationMarker();
+            GeoMarker.setCircleOptions({ fillColor: '#808080' });
+
+            google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function () {
+                map.setCenter(this.getPosition());
+                map.fitBounds(this.getBounds());
+            });
+
+            google.maps.event.addListener(GeoMarker, 'geolocation_error', function (e) {
+                alert('There was an error obtaining your position. Message: ' + e.message);
+            });
+
+            GeoMarker.setMap(map);
+        }
+
+        google.maps.event.addDomListener(window, 'load', getlocation);
+
+        if (!navigator.geolocation) {
+            alert('Your browser does not support geolocation');
+        }
+
+        $(document).ready(function () {
+            $(".curser").click(function () {
+                //var k = $(this).text();
+                // var k = $(this);
+                // for(var element in k) {
+                //     if(element == "text"){
+                //         alert(k[0]['text'].trim());
+                //     }
+                // };
+
+
+                if ($(this).text().trim() == "Login") {
+                    //$(".cust-modal.login").css("display", "block");
+                    $(".cust-modal.login").fadeIn(1000);
+                    $(".cust-modal.register").fadeOut(1000);
+                } else if ($(this).text().trim() == "Sign Up") {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        api = `http://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&sensor=true`
+                        $.ajax({
+                            url: api,
+                            type: "get",
+                            success: function (res) {
+                                //alert(res);
+                                $("#city").val(res.plus_code['compound_code'].split(" ")[1].split(",")[0]);
+                            }
+                        });
+                    });
+                    $(".cust-modal.register").fadeIn(1000);
+                    $(".cust-modal.login").fadeOut(1000);
+                }
+            });
+            $(".cust-close").click(function () {
+                //$(".cust-modal").css("display", "none");
+                $(".cust-modal").fadeOut(1000);
+            });
+        });
+    </script>
+</head>
+
+
+<body>
+    <div class="wrap">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">WebSiteName</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="#">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 1</a>
+                    </li>
+                    <li>
+                        <a href="#">Page 2</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="curser">
+                            <span class="glyphicon glyphicon-user"></span>
+                            Sign Up
+                        </a>
+                    </li>
+                    <li>
+                        <a class="curser">
+                            <span class="glyphicon glyphicon-log-in"></span> Login</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div id="map_canvas"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="cust-modal register">
+            <div class="form col-md-6 col-md-offset-3">
+                <div class="form-group" style="text-align: center">
+                    <span class="pull-right cust-close glyphicon glyphicon-remove"></span>
+                    <img width="20%" alt="" src="./Admin.png" class="img-circle" />
+                </div>
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="name">Emial</label>
+                    <input type="email" name="name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="name">Mobile</label>
+                    <input type="tel" name="name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="name">City</label>
+                    <input type="text" id="city" name="name" readonly class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="name">Password</label>
+                    <input type="password" name="name" class="form-control">
+                </div>
+            </div>
+        </div>
+        <div class="cust-modal login">
+            <div class="form col-md-6 col-md-offset-3">
+                <div class="form-group" style="text-align: center">
+                    <span class="pull-right cust-close glyphicon glyphicon-remove"></span>
+                    <img width="20%" alt="" src="./Admin.png" class="img-circle" />
+                </div>
+                <div class="form-group">
+                    <label for="name">Emial</label>
+                    <input type="email" name="name" class="form-control">
+                    <div class="form-group">
+                        <label for="name">Password</label>
+                        <input type="password" name="name" class="form-control">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+</body>
+
+</html>

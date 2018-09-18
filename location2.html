@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./jquery-3.3.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                
+                        //$("body").append(`<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3783.116500562255!2d${position.coords.latitude}!3d${position.coords.longitude}!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1537256414170" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>`);
+                        alert(`<iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d3783.116500562255!2d${position.coords.latitude}!3d${position.coords.longitude}!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sin!4v1537256414170" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>`)
+                   
+            });
+           
+        });
+    </script>
+
+
+</head>
+
+<body>
+
+</body>
+
+</html>

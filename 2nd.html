@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2nd</title>
+    <script src="./jquery-3.3.1.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            $("#gb").mouseover(function () {
+               
+                $("#gb").animate({
+                    "border-radius": "50%",
+                    "opacity": "0.5",
+                }, 500);
+            });
+            $("#gb").mouseleave(function () {
+                
+                $("#gb").animate({
+                    "border-radius": "0%",
+                    "opacity": "1",
+                }, 500);
+            });
+        });
+    </script>
+    <style>
+        #gb {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gb">
+        Ganesh
+    </div>
+
+</body>
+
+</html>
